@@ -4,7 +4,7 @@
 
   <groupId>com.pluhin.util</groupId>
   <artifactId>notification-framework</artifactId>
-  <version>1.2</version>
+  <version>1.3-SNAPSHOT</version>
 
   <name>Notification framework</name>
   <description>Utility to easily integrate notifications in any project</description>
@@ -157,6 +157,6 @@
     <connection>scm:git:git://github.com/pavel-luhin/notification-framework.git</connection>
     <developerConnection>scm:git:git@github.com:pavel-luhin/notification-framework.git</developerConnection>
     <url>https://github.com/pavel-luhin/notification-framework</url>
-    <tag>notification-framework-1.2</tag>
+    <tag>notification-framework-1.0</tag>
   </scm>
 </project>
