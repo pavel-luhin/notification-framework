@@ -4,7 +4,7 @@
 
   <groupId>com.pluhin</groupId>
   <artifactId>notification-framework</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
 
   <licenses>
     <license>
@@ -151,8 +151,8 @@
 
   <scm>
     <connection>scm:git:git://github.com/pavel-luhin/notification-framework.git</connection>
-    <developerConnection>scm:git:git@github.com:pavel-luhin/notification-framework.git</developerConnection>
-    <url>https://github.com/pavel-luhin/websms-api</url>
+    <developerConnection>scm:git:git@github.com:pluhin/notification-framework.git</developerConnection>
+    <url>https://github.com/pluhin/notification-framework</url>
     <tag>HEAD</tag>
   </scm>
 </project>
