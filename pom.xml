@@ -4,7 +4,7 @@
 
   <groupId>com.pluhin.util</groupId>
   <artifactId>notification-framework</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
 
   <name>Notification framework</name>
   <description>Utility to easily integrate notifications in any project</description>
