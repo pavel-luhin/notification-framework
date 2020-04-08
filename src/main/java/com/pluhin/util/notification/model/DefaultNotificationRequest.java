@@ -1,6 +1,7 @@
 package com.pluhin.util.notification.model;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,14 @@ public class DefaultNotificationRequest implements NotificationRequest {
     this.templateName = templateName;
     this.params = params;
     this.attachments = attachments;
+  }
+
+  public DefaultNotificationRequest(Recipient recipient, String templateName,
+      Map<String, String> params) {
+    this.recipient = recipient;
+    this.templateName = templateName;
+    this.params = params;
+    this.attachments = Collections.emptyList();
   }
 
   @Override
