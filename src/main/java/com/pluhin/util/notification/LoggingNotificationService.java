@@ -9,6 +9,12 @@ public class LoggingNotificationService implements NotificationService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LoggingNotificationService.class);
 
+  private final NotificationService delegate;
+
+  public LoggingNotificationService(NotificationService delegate) {
+    this.delegate = delegate;
+  }
+
   @Override
   public void send(NotificationRequest notification) {
     Recipient recipient = notification.getRecipient();
@@ -17,5 +23,6 @@ public class LoggingNotificationService implements NotificationService {
         recipient.getAddress(),
         notification.getTemplateName()
     );
+    delegate.send(notification);
   }
 }
