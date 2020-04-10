@@ -1,5 +1,7 @@
 package com.pluhin.util.notification.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -12,11 +14,12 @@ public class DefaultNotificationRequest implements NotificationRequest {
   private final Map<String, String> params;
   private final List<File> attachments;
 
+  @JsonCreator
   public DefaultNotificationRequest(
-      Recipient recipient,
-      String templateName,
-      Map<String, String> params,
-      List<File> attachments
+      @JsonProperty("recipient") Recipient recipient,
+      @JsonProperty("templateName") String templateName,
+      @JsonProperty("params") Map<String, String> params,
+      @JsonProperty("attachments") List<File> attachments
   ) {
     this.recipient = recipient;
     this.templateName = templateName;

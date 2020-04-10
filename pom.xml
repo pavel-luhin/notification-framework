@@ -16,11 +16,27 @@
     </license>
   </licenses>
 
+  <properties>
+    <java.mail.verion>1.5.0-b01</java.mail.verion>
+    <slf4j.api.version>2.0.0-alpha1</slf4j.api.version>
+    <jackson.version>2.10.3</jackson.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
-      <version>1.5.0-b01</version>
+      <version>${java.mail.verion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
     </dependency>
   </dependencies>
 

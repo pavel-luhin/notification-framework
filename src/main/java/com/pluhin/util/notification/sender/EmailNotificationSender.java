@@ -3,6 +3,7 @@ package com.pluhin.util.notification.sender;
 import com.pluhin.util.notification.model.EmailNotification;
 import com.pluhin.util.notification.model.Notification;
 import com.pluhin.util.notification.model.Recipient;
+import exception.CannotSendNotificationException;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
@@ -16,21 +17,30 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EmailNotificationSender implements NotificationSender {
 
-  private final Boolean hasSsl;
-  private final String host;
-  private final String port;
+  private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationSender.class);
+
+  private final Properties properties;
   private final String username;
   private final String password;
   private final String from;
 
-  public EmailNotificationSender(Boolean hasSsl, String host, String port, String username, String password,
+  public EmailNotificationSender(boolean hasSsl, String host, String port, String username, String password,
       String from) {
-    this.hasSsl = hasSsl;
-    this.host = host;
-    this.port = port;
+    Properties copy = new Properties();
+    copy.put("mail.smtp.auth", true);
+    copy.put("mail.smtp.host", host);
+    copy.put("mail.smtp.port", port);
+    copy.put("mail.smtp.ssl.trust", host);
+    if (hasSsl) {
+      copy.put("mail.smtp.starttls.enable", "true");
+    }
+
+    this.properties = new Properties(copy);
     this.username = username;
     this.password = password;
     this.from = from;
@@ -44,17 +54,7 @@ public class EmailNotificationSender implements NotificationSender {
 
     EmailNotification emailNotification = (EmailNotification) notification;
 
-    Properties prop = new Properties();
-    prop.put("mail.smtp.auth", true);
-    prop.put("mail.smtp.host", host);
-    prop.put("mail.smtp.port", port);
-    prop.put("mail.smtp.ssl.trust", host);
-
-    if (hasSsl) {
-      prop.put("mail.smtp.starttls.enable", "true");
-    }
-
-    Session session = Session.getInstance(prop, new Authenticator() {
+    Session session = Session.getInstance(properties, new Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(username, password);
@@ -84,7 +84,8 @@ public class EmailNotificationSender implements NotificationSender {
 
       Transport.send(message);
     } catch (Exception ex) {
-
+      LOGGER.error("Cannot send email to {} due to exception {}", recipient.getAddress(), ex);
+      throw new CannotSendNotificationException("Cannot send email to " + recipient.getAddress(), ex);
     }
   }
 }
