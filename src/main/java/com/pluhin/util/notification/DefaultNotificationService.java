@@ -1,18 +1,18 @@
 package com.pluhin.util.notification;
 
-import com.pluhin.util.notification.model.Notification;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.pluhin.util.notification.model.NotificationRequest;
-import com.pluhin.util.notification.model.Recipient;
-import com.pluhin.util.notification.model.Template;
 import com.pluhin.util.notification.processor.TemplateProcessor;
 import com.pluhin.util.notification.repository.TemplateRepository;
+import com.pluhin.util.notification.runnable.NotificationRunnable;
 import com.pluhin.util.notification.sender.NotificationSender;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public class DefaultNotificationService implements NotificationService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultNotificationService.class);
+  private final Executor executor;
 
   private final TemplateRepository templateRepository;
   private final TemplateProcessor templateProcessor;
@@ -23,18 +23,16 @@ public class DefaultNotificationService implements NotificationService {
     this.templateRepository = templateRepository;
     this.templateProcessor = templateProcessor;
     this.sender = sender;
+
+    ThreadFactory threadFactory = new ThreadFactoryBuilder()
+        .setNameFormat("notification-%s")
+        .build();
+    this.executor = Executors.newFixedThreadPool(10, threadFactory);
   }
 
   @Override
   public void send(NotificationRequest request) {
-    Template template = templateRepository.findTemplate(request.getTemplateName());
-    Notification notification = templateProcessor.process(template, request.getParams());
-    Recipient recipient = request.getRecipient();
-    LOGGER.info("Sending {} notification to {} with name {}",
-        recipient.getType(),
-        recipient.getAddress(),
-        request.getTemplateName()
-    );
-    sender.send(notification, request.getRecipient(), request.getAttachments());
+    Runnable runnable = new NotificationRunnable(templateRepository, templateProcessor, sender, request);
+    executor.execute(runnable);
   }
 }
