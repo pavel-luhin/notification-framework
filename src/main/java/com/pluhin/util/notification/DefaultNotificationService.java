@@ -1,10 +1,11 @@
 package com.pluhin.util.notification;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.pluhin.util.notification.model.Notification;
 import com.pluhin.util.notification.model.NotificationRequest;
+import com.pluhin.util.notification.model.Template;
 import com.pluhin.util.notification.processor.TemplateProcessor;
 import com.pluhin.util.notification.repository.TemplateRepository;
-import com.pluhin.util.notification.runnable.NotificationRunnable;
 import com.pluhin.util.notification.sender.NotificationSender;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -32,7 +33,10 @@ public class DefaultNotificationService implements NotificationService {
 
   @Override
   public void send(NotificationRequest request) {
-    Runnable runnable = new NotificationRunnable(templateRepository, templateProcessor, sender, request);
-    executor.execute(runnable);
+    executor.execute(() -> {
+      Template template = templateRepository.findTemplate(request.getTemplateName());
+      Notification notification = templateProcessor.process(template, request.getParams());
+      sender.send(notification, request.getRecipient(), request.getAttachments());
+    });
   }
 }
