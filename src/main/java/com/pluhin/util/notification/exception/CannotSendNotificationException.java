@@ -1,4 +1,4 @@
-package exception;
+package com.pluhin.util.notification.exception;
 
 public class CannotSendNotificationException extends RuntimeException {
 

@@ -3,7 +3,7 @@ package com.pluhin.util.notification.sender;
 import com.pluhin.util.notification.model.EmailNotification;
 import com.pluhin.util.notification.model.Notification;
 import com.pluhin.util.notification.model.Recipient;
-import exception.CannotSendNotificationException;
+import com.pluhin.util.notification.exception.CannotSendNotificationException;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
@@ -35,8 +35,8 @@ public class EmailNotificationSender implements NotificationSender {
     copy.put("mail.smtp.auth", true);
     copy.put("mail.smtp.host", host);
     copy.put("mail.smtp.port", port);
-    copy.put("mail.smtp.ssl.trust", host);
     if (hasSsl) {
+      copy.put("mail.smtp.ssl.trust", host);
       copy.put("mail.smtp.starttls.enable", "true");
     }
 
