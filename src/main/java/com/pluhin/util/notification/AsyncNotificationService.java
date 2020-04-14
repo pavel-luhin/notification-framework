@@ -6,13 +6,14 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-public class ThreadedNotificationService implements NotificationService {
+public class AsyncNotificationService implements NotificationService {
 
   private final NotificationService delegate;
   private final Executor executor;
 
-  public ThreadedNotificationService(NotificationService delegate) {
+  public AsyncNotificationService(NotificationService delegate) {
     this.delegate = delegate;
+
     ThreadFactory threadFactory = new ThreadFactoryBuilder()
         .setNameFormat("notification-%s")
         .build();

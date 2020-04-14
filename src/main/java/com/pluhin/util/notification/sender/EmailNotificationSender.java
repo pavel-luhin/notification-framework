@@ -32,7 +32,7 @@ public class EmailNotificationSender implements NotificationSender {
   public EmailNotificationSender(boolean hasSsl, String host, String port, String username, String password,
       String from) {
     Properties copy = new Properties();
-    copy.put("mail.smtp.auth", true);
+    copy.put("mail.smtp.auth", "true");
     copy.put("mail.smtp.host", host);
     copy.put("mail.smtp.port", port);
     if (hasSsl) {
@@ -74,11 +74,13 @@ public class EmailNotificationSender implements NotificationSender {
       Multipart multipart = new MimeMultipart();
       multipart.addBodyPart(mimeBodyPart);
 
-      MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-      for (File file : attachments) {
-        attachmentBodyPart.attachFile(file);
+      if (attachments != null && !attachments.isEmpty()) {
+        MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+        for (File file : attachments) {
+          attachmentBodyPart.attachFile(file);
+        }
+        multipart.addBodyPart(attachmentBodyPart);
       }
-      multipart.addBodyPart(attachmentBodyPart);
 
       message.setContent(multipart);
 
