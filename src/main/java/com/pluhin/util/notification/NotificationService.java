@@ -1,5 +1,6 @@
 package com.pluhin.util.notification;
 
+import com.pluhin.util.notification.model.NotificationEntity;
 import com.pluhin.util.notification.model.NotificationRequest;
 import java.util.List;
 
@@ -9,5 +10,5 @@ public interface NotificationService {
     notificationRequests.forEach(this::send);
   }
 
-  void send(NotificationRequest notifications);
+  NotificationEntity send(NotificationRequest notifications);
 }

@@ -1,5 +1,6 @@
 package com.pluhin.util.notification;
 
+import com.pluhin.util.notification.model.NotificationEntity;
 import com.pluhin.util.notification.model.NotificationRequest;
 import com.pluhin.util.notification.model.Recipient;
 import org.slf4j.Logger;
@@ -16,13 +17,13 @@ public class LoggingNotificationService implements NotificationService {
   }
 
   @Override
-  public void send(NotificationRequest notification) {
+  public NotificationEntity send(NotificationRequest notification) {
     Recipient recipient = notification.getRecipient();
     LOGGER.info("Sending {} notification to {} with name {}",
         recipient.getType(),
         recipient.getAddress(),
         notification.getTemplateName()
     );
-    delegate.send(notification);
+    return delegate.send(notification);
   }
 }

@@ -1,5 +1,6 @@
 package com.pluhin.util.notification;
 
+import com.pluhin.util.notification.model.NotificationEntity;
 import com.pluhin.util.notification.model.NotificationRequest;
 import com.pluhin.util.notification.model.RecipientType;
 import java.util.Map;
@@ -14,9 +15,9 @@ public class DictionaryNotificationService implements NotificationService {
   }
 
   @Override
-  public void send(NotificationRequest notificationRequest) {
+  public NotificationEntity send(NotificationRequest notificationRequest) {
     RecipientType type = notificationRequest.getRecipient().getType();
 
-    dictionary.get(type).send(notificationRequest);
+    return dictionary.get(type).send(notificationRequest);
   }
 }
